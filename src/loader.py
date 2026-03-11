@@ -1,7 +1,7 @@
 """
 This file loads the CSV file and inserts the data into the PostgreSQL database using the functions from db.py and config.py.
 """
-
+import argparse
 import config
 import db
 import logging_config
@@ -58,7 +58,12 @@ def read_file(csv_path:str | None) -> List[dict[str, str]] :
         logger.error(f"CSV file not found at path: {csv_path}")
         raise FileNotFoundError(f"CSV file not found at path: {csv_path}")
     
-
+"""
+we are writing main function earlier even if it is using functions written after main function. 
+Python executes line by line so can't identify functions written after the current function 
+As it is only called by running if __name__ == "__main__": main() at the very last of the file. 
+so technically we are calling it after it reads all the other functions.
+"""
 def main():
     """
     Main function to load the CSV file and insert the data into the PostgreSQL database.
@@ -73,7 +78,13 @@ def main():
         db.create_table_if_not_exists(connection_object)
         
         # Read CSV file
-        csv_path = config.get_csv_path()
+        #csv_path = config.get_csv_path()
+        
+        parser=argparse.ArgumentParser(description="CSV to Postgres Loader")
+        parser.add_argument("--csv", help="Path to CSV file", default=config.get_csv_path())
+        args=parser.parse_args()
+        csv_path=args.csv
+
         logger.info(f"Reading CSV from {csv_path}")
         rows = read_file(csv_path)
         
