@@ -10,6 +10,7 @@ from typing import List
 from psycopg2.extensions import connection,cursor
 from datetime import datetime
 import sys
+import psycopg2
 
 #Keeping logger outside at module level to be accessible to all functions in this file.
 logger = logging_config.setup_logging()
@@ -30,7 +31,7 @@ csv_to_database_mapping = {
     "Evaluation Info":"evaluation_information",
     "District Elements":"district_elements",
     "Parent District":"parent_district",
-    "Associated Resources":"associated_resources",
+    "Assoc Resources":"associated_resources",
     "Parcel Num":"parcel_number",
     "MilePost":"mile_post",
     "Ownership":"ownership",
@@ -147,7 +148,13 @@ def insert_record(connection_object: connection, record: dict[str, str]) -> None
         postgres_cursor.execute(insert_query, tuple(record_values))
         connection_object.commit()
         postgres_cursor.close()
-        logger.info(f"Inserted record with otis_id: {record['OTIS ID']}")
+        logger.debug(f"Inserted record with otis_id: {record['OTIS ID']}")
+    except psycopg2.errors.StringDataRightTruncation as e:
+        #exception case when data is too long in csv file.
+        #if data is too long compared to the database columns we created, throw an error
+        logger.error(f"Data too long for column. Consider increasing column size in create_table.sql. Error: {e}")
+        connection_object.rollback()
+        raise
     except Exception as e:
         logger.error(f"Error inserting record with otis_id {record['OTIS ID']}: {e}")
         connection_object.rollback()
@@ -174,7 +181,13 @@ def update_record(connection_object:connection,record:dict[str,str|None])-> None
         postgres_cursor.execute(update_query,tuple(record_values))
         connection_object.commit()
         postgres_cursor.close()
-        logger.info(f"Updated the record with OTIS ID: {record['OTIS ID']}")
+        logger.debug(f"Updated the record with OTIS ID: {record['OTIS ID']}")
+    except psycopg2.errors.StringDataRightTruncation as e:
+        #exception case when data is too long in csv file.
+        #if data is too long compared to the database columns we created, throw an error
+        logger.error(f"Data too long for column. Consider increasing column size in create_table.sql. Error: {e}")
+        connection_object.rollback()
+        raise
     except Exception as e:
         logger.error(f"Error updating record with OTIS ID: {record['OTIS ID']} with error: {e}")
         connection_object.rollback()

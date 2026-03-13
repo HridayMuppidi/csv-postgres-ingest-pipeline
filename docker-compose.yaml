@@ -2,13 +2,19 @@
 services:
   csv_postgres_ingest_pipeline:
     build:
+      #build from current folder
       context: .
+
+    #depends on postgres database, so database should be logged in and ready to be used before proceeding further
     depends_on:
-      - postgres_database
+      postgres_database:
+        condition: service_healthy
     env_file:
       - .env
     environment:
       - DB_HOST=postgres_database
+    networks:
+      - app_network
   postgres_database: 
     image: postgres
     environment:
@@ -16,6 +22,30 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - app_network
+    #check the health of database, database should be ready before app starts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "none"
+
+  #adminer service lets you view the database in runtime
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - app_network
+    depends_on:
+      - postgres_database
+    logging:
+      driver: "none"
+networks: 
+  app_network:
 volumes:
   postgres_data:
