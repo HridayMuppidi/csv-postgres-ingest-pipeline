@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 import loader
 
-# ===== FIXTURES =====
+#  FIXTURES 
  
 @pytest.fixture
 def sample_row():
@@ -46,7 +46,7 @@ def mock_conn():
     return MagicMock()
  
  
-# ===== READ FILE TESTS =====
+# READ FILE TESTS 
  
 def test_read_file_valid_csv():
     """Test that a valid CSV file returns a list of rows."""
@@ -79,7 +79,7 @@ def test_read_file_empty_csv(tmp_path):
     assert rows == []
  
  
-# ===== RECORD EXISTS TESTS =====
+# RECORD EXISTS TESTS
  
 def test_record_exists_returns_true(mock_conn):
     """Test that record_exists returns True when record is found."""
@@ -99,7 +99,7 @@ def test_record_exists_returns_false(mock_conn):
     assert result == False
  
  
-# ===== INSERT RECORD TESTS =====
+# INSERT RECORD TESTS
  
 def test_insert_record_success(mock_conn, sample_row):
     """Test that insert_record executes without errors for a valid row."""
@@ -152,7 +152,7 @@ def test_update_record_rollback_on_error(mock_conn, sample_row):
     mock_conn.rollback.assert_called_once()
  
  
-# ===== UPSERT ROW TESTS =====
+# UPSERT ROW TESTS 
  
 def test_upsert_row_inserts_when_record_does_not_exist(mock_conn, sample_row):
     """Test that upsert_row calls insert when record doesn't exist."""
