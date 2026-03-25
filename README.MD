@@ -10,7 +10,6 @@ A production-grade Python data pipeline that loads CSV data into a PostgreSQL da
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
-- [Local Environment Setup](#local-environment-setup)
 - [Setup and Installation](#setup-and-installation)
 - [How to Run the Loader](#how-to-run-the-loader)
 - [How to View the Database](#how-to-view-the-database)
@@ -82,6 +81,14 @@ Before you begin, make sure you have the following installed:
 
 ---
 
+## Before You Begin
+
+All commands in this README should be run in your terminal:
+- **Windows** — use **Command Prompt** or **PowerShell**
+- **Mac/Linux** — use **Terminal**
+
+Make sure you are always in the project root folder (`csv-postgres-ingest-pipeline/`) when running commands.
+
 
 ## Setup and Installation
 
@@ -91,9 +98,11 @@ Before you begin, make sure you have the following installed:
 git clone https://github.com/HridayMuppidi/csv-postgres-ingest-pipeline.git
 cd csv-postgres-ingest-pipeline
 ```
+>After cloning, all subsequent commands should be run from inside the `csv-postgres-ingest-pipeline/` folder.
+
 ### Step 2 — Local Environment Setup
 
-> This step is only required for running tests locally. If you only want to run the pipeline using Docker, skip to [Create your `.env ` file](#create-env-file).
+> This step is only required for running tests locally. If you only want to run the pipeline using Docker, skip to [Create your .env file](#step-3----create-your-env-file).
 
 
 ```bash
@@ -251,7 +260,7 @@ Enter your database password (same as `DB_PASSWORD` in your `.env`) and you will
 
 ## How to Run Tests
 
-Make sure your local environment is set up (see [Local Environment Setup](#local-environment-setup)), then run:
+Make sure your local environment is set up (see [Local Environment Setup](#step-2--local-environment-setup)), then run:
 
 ```bash
 pytest tests/ -v
