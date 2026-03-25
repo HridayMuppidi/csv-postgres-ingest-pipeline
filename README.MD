@@ -177,6 +177,7 @@ Leave `CSV_PATH` out of `.env` and pass the path when running. See [How to Run t
 ### Step 6 — Start all containers
 
 > Start Docker Desktop Application before running the following commands.Check the [Troubleshooting Guide](#troubleshooting) if you encounter any problems.
+
 **Option A — Run in background (recommended):**
 ```bash
 docker compose up --build -d
