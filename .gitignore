@@ -10,3 +10,6 @@ __pycache__/
 
 # pytest cache
 .pytest_cache/
+
+# Data files - not committed to repository
+data/*.csv

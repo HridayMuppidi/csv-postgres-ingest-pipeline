@@ -96,6 +96,9 @@ Make sure you are always in the project root folder (`csv-postgres-ingest-pipeli
 
 ```bash
 git clone https://github.com/HridayMuppidi/csv-postgres-ingest-pipeline.git
+```
+
+```bash
 cd csv-postgres-ingest-pipeline
 ```
 >After cloning, all subsequent commands should be run from inside the `csv-postgres-ingest-pipeline/` folder.
@@ -107,8 +110,14 @@ cd csv-postgres-ingest-pipeline
 
 ```bash
 python -m venv venv
+```
+```bash
 venv\Scripts\activate        # Windows
+```
+```bash
 source venv/bin/activate     # Mac/Linux
+```
+```bash
 pip install -r requirements.txt
 ```
 
@@ -118,7 +127,10 @@ pip install -r requirements.txt
 ### Step 3 — Create your `.env` file
 
 ```bash
-cp .env.example .env
+copy .env.example .env #Windows
+```
+```bash
+cp .env.example .env #Mac/Linux
 ```
 
 Open `.env` and fill in your values:
