@@ -150,8 +150,22 @@ Mac/Linux:
 cp .env.example .env         
 ```
 
-Open the newly created `.env` file and fill in your values:
+The `.env` file will be created in your project root folder (`csv-postgres-ingest-pipeline/`). Open it with any text editor:
 
+Windows:
+```bash
+notepad .env          
+```
+Mac:
+```bash
+open -e .env          
+```
+Linux:
+```bash
+nano .env             
+```
+
+Fill in your environment variable values:
 ```
 DB_HOST=localhost
 DB_PORT=5432
