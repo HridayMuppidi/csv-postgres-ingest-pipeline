@@ -197,7 +197,23 @@ Leave `CSV_PATH` commented out in `.env` and pass the path when running the load
 
 > Make sure Docker Desktop is open and running before executing these commands the following commands.Check the [Troubleshooting Guide](#troubleshooting) if you encounter any problems.
 
-**Option A — Run in background (recommended):**
+
+**Option A — Run in foreground (Recommended. You can see logs immediately and access database using adminer):**
+Run containers and see the logs at the same time:
+```bash
+docker compose up --build
+```
+This shows all logs in real time in your terminal.Press `Ctrl+C` to stop the containers when done.
+
+This starts:
+- PostgreSQL database
+- Python ingest application
+- Adminer database UI
+
+> **Important:** After the first run, use `docker compose up` (without `--build`) for subsequent runs. Only use `--build` when you have made code changes.
+
+**Option B — Run in background:**
+Run Containers and check logs separately:
 ```bash
 docker compose up --build -d
 ```
@@ -205,23 +221,15 @@ This runs everything silently in the background. View logs separately with:
 ```bash
 docker compose logs csv_postgres_ingest_pipeline
 ```
-
-**Option B — Run in foreground (see logs immediately):**
-```bash
-docker compose up --build
-```
-This shows all logs in real time in your terminal.
-
-This starts:
-- PostgreSQL database
-- Python ingest application
-- Adminer database UI
-
 > **Important:** After the first run, use `docker compose up -d` (without `--build`) for subsequent runs. Only use `--build` when you have made code changes.
 
 ---
 
-## How to Run the Loader
+## How to Load a CSV file
+
+You have two ways to specify which CSV file to load:
+- **Option A** — set `CSV_PATH` in `.env` — loads automatically on `docker compose up`
+- **Option B** — pass `--csv` via command line — more flexible, works anytime
 
 ### Using `.env` for CSV path
 
@@ -414,6 +422,21 @@ A composite key using multiple columns was considered but rejected because:
 ```bash
 docker compose down -v
 docker compose up --build -d
+```
+
+---
+
+### pytest not recognized
+**Error:** `pytest is not recognized as the name of a cmdlet`
+
+**Fix:** Your virtual environment is not activated. Run:
+```bash
+venv\Scripts\activate    # Windows
+source venv/bin/activate # Mac/Linux
+```
+Then retry:
+```bash
+pytest tests/ -v
 ```
 
 ---
