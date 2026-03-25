@@ -53,7 +53,7 @@ def read_file(csv_path:str | None) -> List[dict[str, str]] :
             csv_reader = csv.DictReader(file)
             rows =[row for row in csv_reader]
             logger.info(f"Successfully read {len(rows)} rows from the CSV file.")
-            logger.debug(f"Rows read: {rows}")
+            logger.debug(f"First row sample: {rows[0] if rows else 'empty'}")
         return rows
     except FileNotFoundError:
         logger.error(f"CSV file not found at path: {csv_path}")

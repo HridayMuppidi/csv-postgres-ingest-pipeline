@@ -10,6 +10,7 @@ A production-grade Python data pipeline that loads CSV data into a PostgreSQL da
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
+- [Before You Begin](#before-you-begin)
 - [Setup and Installation](#setup-and-installation)
 - [How to Run the Loader](#how-to-run-the-loader)
 - [How to View the Database](#how-to-view-the-database)
@@ -89,6 +90,7 @@ All commands in this README should be run in your terminal:
 
 Make sure you are always in the project root folder (`csv-postgres-ingest-pipeline/`) when running commands.
 
+---
 
 ## Setup and Installation
 
@@ -101,42 +103,50 @@ git clone https://github.com/HridayMuppidi/csv-postgres-ingest-pipeline.git
 ```bash
 cd csv-postgres-ingest-pipeline
 ```
->After cloning, all subsequent commands should be run from inside the `csv-postgres-ingest-pipeline/` folder.
+
+> After cloning, all subsequent commands should be run from inside the `csv-postgres-ingest-pipeline/` folder.
+
+---
 
 ### Step 2 — Local Environment Setup
 
-> This step is only required for running tests locally. If you only want to run the pipeline using Docker, skip to [Create your .env file](#step-3----create-your-env-file).
+> This step is only required for running tests locally. If you only want to run the pipeline using Docker, skip to [Step 3 — Create your .env file](#step-3--create-your-env-file).
 
-Activate the virtual environment for the project:
+Create and activate the virtual environment:
+
 ```bash
 python -m venv venv
 ```
+
 ```bash
 venv\Scripts\activate        # Windows
 ```
+
 ```bash
 source venv/bin/activate     # Mac/Linux
 ```
 
-install the required dependent modules:
+Install the required dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-
 ### Step 3 — Create your `.env` file
 
 Copy the example env file to create your own `.env`:
+
 ```bash
-copy .env.example .env #Windows
-```
-```bash
-cp .env.example .env #Mac/Linux
+copy .env.example .env       # Windows
 ```
 
-Open `.env` and fill in your values:
+```bash
+cp .env.example .env         # Mac/Linux
+```
+
+Open the newly created `.env` file and fill in your values:
 
 ```
 DB_HOST=localhost
@@ -147,8 +157,13 @@ DB_PASSWORD=your_password_here
 LOG_LEVEL=INFO
 UPDATE_USER=your_name
 # Optional: specify CSV path here, or pass --csv argument via command line
-CSV_PATH=data/your_file.csv
+# CSV_PATH=data/your_file.csv
 ```
+
+> **Important:** Remove all comments from your `.env` file after copying — comments can cause connection issues.
+> If your password contains special characters like `@` or `$`, wrap it in quotes: `DB_PASSWORD="your@password"`
+
+---
 
 ### Step 4 — Place your CSV file in the `data/` folder
 
@@ -159,24 +174,29 @@ data/
 └── your_file.csv
 ```
 
+---
+
 ### Step 5 — Configure your CSV path
 
 You have two options for specifying the CSV file:
 
 **Option A — Set it in `.env` (runs automatically on `docker compose up`):**
 
-Replace your_file.csv with your own csv file name in `.env` file:
+Uncomment and update `CSV_PATH` in your `.env` file:
 ```
 CSV_PATH=data/your_file.csv
 ```
 
 **Option B — Pass it via command line (more flexible, overrides `.env`):**
 
-Leave `CSV_PATH` out of `.env` and pass the path when running. See [How to Run the Loader](#how-to-run-the-loader) for details.
+Leave `CSV_PATH` commented out in `.env` and pass the path when running the loader. See [How to Run the Loader](#how-to-run-the-loader) for details.
+
+---
 
 ### Step 6 — Start all containers
 
-> Start Docker Desktop Application before running the following commands.Check the [Troubleshooting Guide](#troubleshooting) if you encounter any problems.
+> Make sure Docker Desktop is open and running before executing these commands.
+
 **Option A — Run in background (recommended):**
 ```bash
 docker compose up --build -d
@@ -197,7 +217,7 @@ This starts:
 - Python ingest application
 - Adminer database UI
 
-> **Important:** After the first run use `docker compose up -d` (without `--build`) for subsequent runs. Only use `--build` when you have made code changes.
+> **Important:** After the first run, use `docker compose up -d` (without `--build`) for subsequent runs. Only use `--build` when you have made code changes.
 
 ---
 
@@ -206,6 +226,8 @@ This starts:
 ### Using `.env` for CSV path
 
 If you set `CSV_PATH` in your `.env` file, the loader runs automatically when you do `docker compose up`.
+
+---
 
 ### Using command line for CSV path
 
@@ -217,6 +239,8 @@ docker compose run csv_postgres_ingest_pipeline python src/loader.py --csv data/
 
 > **Note:** The command line argument always overrides the `CSV_PATH` value in `.env` if both are set.
 
+---
+
 ### To load a different CSV file at any time
 
 1. Copy your new CSV file into the `data/` folder
@@ -224,6 +248,8 @@ docker compose run csv_postgres_ingest_pipeline python src/loader.py --csv data/
 ```bash
 docker compose run csv_postgres_ingest_pipeline python src/loader.py --csv data/new_file.csv
 ```
+
+---
 
 ### Viewing logs
 
@@ -243,15 +269,45 @@ INFO - Number of updated records: 0
 INFO - CSV to database loader executed successfully
 ```
 
+---
+
 ### Enable debug logging
 
 Set in `.env`:
 ```
 LOG_LEVEL=DEBUG
 ```
-This shows detailed logs for every record processed.
+This shows detailed logs including sample row data for debugging.
 
 > **Note:** All timestamps are stored in UTC timezone.
+
+---
+
+### Running the loader again (Idempotency)
+
+This pipeline is idempotent — you can run it multiple times safely. On subsequent runs:
+- Records that already exist will be **updated**
+- New records will be **inserted**
+- No duplicates will be created
+
+To run the loader again after the initial setup:
+
+**If CSV path is set in `.env`:**
+```bash
+docker compose run csv_postgres_ingest_pipeline python src/loader.py
+```
+
+**If passing CSV path via command line:**
+```bash
+docker compose run csv_postgres_ingest_pipeline python src/loader.py --csv data/your_file.csv
+```
+
+Then check the logs to confirm:
+```bash
+docker compose logs csv_postgres_ingest_pipeline
+```
+
+You should see `Number of updated records` increasing and `Number of inserted records: 0` on subsequent runs.
 
 ---
 
@@ -278,7 +334,7 @@ Enter your database password (same as `DB_PASSWORD` in your `.env`) and you will
 
 ## How to Run Tests
 
-Make sure your local environment is set up (see [Local Environment Setup](#step-2--local-environment-setup)), then run:
+Make sure your local environment is set up (see [Step 2 — Local Environment Setup](#step-2--local-environment-setup)), then run:
 
 ```bash
 pytest tests/ -v
@@ -321,9 +377,8 @@ A composite key using multiple columns was considered but rejected because:
 
 ### Column Type Decisions
 
-- `VARCHAR(50)` — short controlled fields like `otis_id`, `zip_code`
-- `VARCHAR(255)` — medium length fields like `name`, `parent_district`
-- `TEXT` — unpredictable length fields like `evaluation_information`, `aliases_and_alias_types`, `associated_resources`
+- `VARCHAR(50)` — short controlled fields like `otis_id`, `zip_code`, `city`, `county`, `street_number`, `street_name`
+- `TEXT` — unpredictable length fields like `name`, `evaluation_information`, `aliases_and_alias_types`, `associated_resources`, `ocode`, `parcel_number`, `parent_district`, `other_geographical_indicators`, `district_elements`
 - `DATE` — `date_modified` and `export_date` (PostgreSQL auto-converts `MM/DD/YYYY` format)
 - `TIMESTAMP` — `lastupdatedt` audit column stores date and time in UTC
 
@@ -353,7 +408,7 @@ A composite key using multiple columns was considered but rejected because:
 ---
 
 ### Data too long for column
-**Error:** `Data too long for column. Consider increasing column size in create_table.sql`
+**Error:** `Data too long for column in record with OTIS ID: XXXXXX`
 
 **Fix:** Open `sql/create_table.sql` and change the affected column type from `VARCHAR(n)` to `TEXT`. Then run:
 ```bash
@@ -391,4 +446,14 @@ docker compose ps
 If they are stopped, restart them:
 ```bash
 docker compose up -d
+```
+
+---
+
+### Password with special characters not working
+**Error:** `password authentication failed for user "postgres"`
+
+**Fix:** If your password contains special characters like `@`, `$`, `!`, wrap it in quotes in your `.env` file:
+```
+DB_PASSWORD="your@special$password"
 ```

@@ -13,13 +13,13 @@ create table if not exists california_properties (
     other_geographical_indicators text, --other geographical indicators can be long, so we will keep it as text
     evaluation_information text, --evaluation information can be long, so we will keep it as text
     district_elements text, --district elements can be long, so we will keep it as text
-    parent_district varchar(255),
+    parent_district text,
     associated_resources text, --associated resources can be long, so we will keep it as text
-    parcel_number varchar(255),
+    parcel_number text,
     mile_post varchar(50),
     ownership varchar(50),
     construction_years varchar(50), --since we have from and to years, we will keep it as varchar
-    ocode varchar(255),
+    ocode text,
     date_modified date,
     export_date date,
     lastupdatedt timestamp,
