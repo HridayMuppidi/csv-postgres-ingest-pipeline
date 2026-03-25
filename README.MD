@@ -195,7 +195,7 @@ Leave `CSV_PATH` commented out in `.env` and pass the path when running the load
 
 ### Step 6 — Start all containers
 
-> Make sure Docker Desktop is open and running before executing these commands.
+> Make sure Docker Desktop is open and running before executing these commands the following commands.Check the [Troubleshooting Guide](#troubleshooting) if you encounter any problems.
 
 **Option A — Run in background (recommended):**
 ```bash
