@@ -107,7 +107,7 @@ cd csv-postgres-ingest-pipeline
 
 > This step is only required for running tests locally. If you only want to run the pipeline using Docker, skip to [Create your .env file](#step-3----create-your-env-file).
 
-
+Activate the virtual environment for the project:
 ```bash
 python -m venv venv
 ```
@@ -117,6 +117,8 @@ venv\Scripts\activate        # Windows
 ```bash
 source venv/bin/activate     # Mac/Linux
 ```
+
+install the required dependent modules:
 ```bash
 pip install -r requirements.txt
 ```
@@ -126,6 +128,7 @@ pip install -r requirements.txt
 
 ### Step 3 — Create your `.env` file
 
+Copy the example env file to create your own `.env`:
 ```bash
 copy .env.example .env #Windows
 ```
@@ -143,6 +146,8 @@ DB_USER=postgres
 DB_PASSWORD=your_password_here
 LOG_LEVEL=INFO
 UPDATE_USER=your_name
+# Optional: specify CSV path here, or pass --csv argument via command line
+CSV_PATH=data/your_file.csv
 ```
 
 ### Step 4 — Place your CSV file in the `data/` folder
