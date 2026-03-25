@@ -165,7 +165,7 @@ You have two options for specifying the CSV file:
 
 **Option A — Set it in `.env` (runs automatically on `docker compose up`):**
 
-Add this to your `.env` file:
+Replace your_file.csv with your own csv file name in `.env` file:
 ```
 CSV_PATH=data/your_file.csv
 ```
@@ -176,6 +176,7 @@ Leave `CSV_PATH` out of `.env` and pass the path when running. See [How to Run t
 
 ### Step 6 — Start all containers
 
+> Start Docker Desktop Application before running the following commands.Check the [Troubleshooting Guide](#troubleshooting) if you encounter any problems.
 **Option A — Run in background (recommended):**
 ```bash
 docker compose up --build -d
