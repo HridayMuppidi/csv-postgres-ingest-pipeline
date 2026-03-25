@@ -82,9 +82,18 @@ Before you begin, make sure you have the following installed:
 
 ---
 
-## Local Environment Setup
 
-> This step is only required for running tests locally. If you only want to run the pipeline using Docker, skip to [Setup and Installation](#setup-and-installation).
+## Setup and Installation
+
+### Step 1 — Clone the repository
+
+```bash
+git clone https://github.com/HridayMuppidi/csv-postgres-ingest-pipeline.git
+cd csv-postgres-ingest-pipeline
+```
+### Step 2 — Local Environment Setup
+
+> This step is only required for running tests locally. If you only want to run the pipeline using Docker, skip to [Create your `.env ` file](#create-env-file).
 
 
 ```bash
@@ -96,16 +105,8 @@ pip install -r requirements.txt
 
 ---
 
-## Setup and Installation
 
-### Step 1 — Clone the repository
-
-```bash
-git clone https://github.com/HridayMuppidi/csv-postgres-ingest-pipeline.git
-cd csv-postgres-ingest-pipeline
-```
-
-### Step 2 — Create your `.env` file
+### Step 3 — Create your `.env` file
 
 ```bash
 cp .env.example .env
@@ -123,7 +124,7 @@ LOG_LEVEL=INFO
 UPDATE_USER=your_name
 ```
 
-### Step 3 — Place your CSV file in the `data/` folder
+### Step 4 — Place your CSV file in the `data/` folder
 
 Copy your CSV file into the `data/` folder of the project:
 
@@ -132,7 +133,7 @@ data/
 └── your_file.csv
 ```
 
-### Step 4 — Configure your CSV path
+### Step 5 — Configure your CSV path
 
 You have two options for specifying the CSV file:
 
@@ -147,7 +148,7 @@ CSV_PATH=data/your_file.csv
 
 Leave `CSV_PATH` out of `.env` and pass the path when running. See [How to Run the Loader](#how-to-run-the-loader) for details.
 
-### Step 5 — Start all containers
+### Step 6 — Start all containers
 
 **Option A — Run in background (recommended):**
 ```bash
