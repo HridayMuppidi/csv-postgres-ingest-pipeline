@@ -118,12 +118,14 @@ Create and activate the virtual environment:
 python -m venv venv
 ```
 
+Windows:
 ```bash
-venv\Scripts\activate        # Windows
+venv\Scripts\activate        
 ```
 
+Mac/Linux:
 ```bash
-source venv/bin/activate     # Mac/Linux
+source venv/bin/activate     
 ```
 
 Install the required dependencies:
@@ -138,12 +140,14 @@ pip install -r requirements.txt
 
 Copy the example env file to create your own `.env`:
 
+Windows:
 ```bash
-copy .env.example .env       # Windows
+copy .env.example .env       
 ```
 
+Mac/Linux:
 ```bash
-cp .env.example .env         # Mac/Linux
+cp .env.example .env         
 ```
 
 Open the newly created `.env` file and fill in your values:
@@ -430,9 +434,15 @@ docker compose up --build -d
 **Error:** `pytest is not recognized as the name of a cmdlet`
 
 **Fix:** Your virtual environment is not activated. Run:
+
+Windows:
 ```bash
-venv\Scripts\activate    # Windows
-source venv/bin/activate # Mac/Linux
+venv\Scripts\activate
+```
+
+Mac/Linux:
+```bash
+source venv/bin/activate
 ```
 Then retry:
 ```bash
