@@ -170,6 +170,18 @@ UPDATE_USER=your_name
 # CSV_PATH=data/your_file.csv
 ```
 
+> **Important:** Only change the following values:
+> - `DB_PASSWORD` — set your own password
+> - `DB_NAME` — optional, change if you want a different database name but ensure the same database name is used in adminer to access the database
+> - `LOG_LEVEL` — `INFO` for normal use, `DEBUG` for detailed logs
+> - `UPDATE_USER` — your name
+> - `CSV_PATH` — path to your CSV file (optional)
+>
+> **Do NOT change:**
+> - `DB_HOST` — must stay as `localhost`
+> - `DB_PORT` — must stay as `5432`
+> - `DB_USER` — must stay as `postgres`
+
 > **Important:** Remove all comments from your `.env` file after copying — comments can cause connection issues.
 > If your password contains special characters like `@` or `$`, wrap it in quotes: `DB_PASSWORD="your@password"`
 
