@@ -128,14 +128,6 @@ Mac/Linux:
 source venv/bin/activate     
 ```
 
-Install the required dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
 ### Step 3 — Create your `.env` file
 
 Copy the example env file to create your own `.env`:
@@ -229,6 +221,8 @@ This starts:
 - Adminer database UI
 
 > **Important:** After the first run, use `docker compose up` (without `--build`) for subsequent runs. Only use `--build` when you have made code changes.
+
+See [How to view the database](#how-to-view-the-database) to access the Adminer database UI.
 
 **Option B — Run in background:**
 Run Containers and check logs separately:
@@ -343,7 +337,7 @@ Adminer is a lightweight database UI included in the Docker setup.
 
 > **Important:** The Docker containers must be running to access Adminer. If you ran with `-d`, the containers stay running in the background and Adminer will be accessible. If you ran without `-d`, keep the terminal open. Once you close the containers, Adminer will no longer be accessible.
 
-To check if containers are running:
+To check if containers are running(no need to run this command if you ran without -d):
 ```bash
 docker compose ps
 ```
